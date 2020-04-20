@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Practica2OLC1"
+    }
+  },
+  "defaultProject": "Practica2OLC1",
+  "cli": {
+    "analytics": "65b61413-7e16-4b91-8acb-dee5a955c420"
+  }
 }

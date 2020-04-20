@@ -1,0 +1,125 @@
+<app-nav></app-nav>
+
+
+<table style="width: 100%;">
+
+    <tr style="height: 40px;"></tr>
+
+    <tr>
+        <td style="width: 5%;"></td>
+        <td style="width: 40%;">
+            <div class="card border-primary mb-3" style="max-width: 35rem;">
+                <div class="card-header">Código a traducir</div>
+                <div class="card-body">
+                  <h4 class="card-title">C#</h4>
+                  <div class="form-group">
+                    <label for="exampleTextarea">Escribe el código aqui: </label>
+                    <textarea class="form-control"  id="txtC"  name="texto" rows="15" #texto></textarea>
+                  </div>
+
+                  <div class="btn-group-vertical">
+                    <button type="button" class="btn btn-primary" (click)="traducir(texto.value)">Button</button>
+                  </div>
+                </div>
+              </div>
+        </td>
+        <td style="width: 10%;"> </td>
+        <td style="width: 40%;">
+            <div class="card border-primary mb-3" style="max-width: 35rem;">
+                <div class="card-header">Código traducido</div>
+                <div class="card-body">
+                  <h4 class="card-title">Python</h4>
+                  <div class="form-group">
+                    <label for="exampleTextarea">Escribe el código aqui: </label>
+                    <textarea class="form-control" id="exampleTextarea" rows="15" #texto2>{{salida}}</textarea>
+                    <input type="file" (change)="buscarArchivo($event)"  multiple>
+                    <button type="button" class="btn btn-primary" (click)="cargarArchivo()">Button</button>
+                  </div>
+                </div>
+              </div>
+        </td>
+        <td style="width: 5%;"></td>
+    </tr>
+    <tr style="height: 40px;"></tr>
+  </table>
+
+
+
+
+
+
+
+
+
+  <table style="width: 100%;">
+    <tr>
+
+      <td style="width: 5%;"></td>
+      <td style="width: 45%; "> 
+
+        <div class="card border-primary mb-3" style="max-width: 35rem; ">
+          
+          <div class="card-body">
+            <h4 class="card-title">Errores</h4>
+            <div class="form-group">
+              <table class="table table-hover"  style="width: 100%;">
+                <thead>
+                  <tr>
+              
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Fila</th>
+                    <th scope="col">Columna</th>
+                    <th scope="col">Descripcion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr class="table-danger" *ngFor="let error of erroresL">
+                    
+                    <td>lexico</td>
+                    <td>{{error.getFila()}}</td>
+                    <td>{{error.getColumna()}}</td>
+                    <td>No se reconoce {{error.getLexema()}}</td>
+                  </tr>
+                  <tr class="table-danger" *ngFor="let error of erroresS">
+                 
+                    <td>Sintactico</td>
+                    <td>{{error.getFila()}}</td>
+                    <td>{{error.getColumna()}}</td>
+                    <td>{{error.getError()}}</td>
+                  </tr>
+                </tbody>
+              </table> 
+      
+            </div>
+          </div>
+        </div>
+       
+      </td>
+      <td style="width: 5%;"> </td>
+      <td style="width: 40%;"> 
+      
+        <div class="card border-primary mb-3" style="max-width: 35rem;">
+          
+          <div class="card-body">
+            <h4 class="card-title">HTML</h4>
+            <div class="form-group">
+              <textarea class="form-control" id="exampleTextarea" rows="15" #texto2>{{html}}</textarea>
+            </div>
+          </div>
+        </div>
+      
+      </td>
+
+      <td style="width: 5%;"></td>
+    </tr>
+
+  </table>
+
+
+
+
+
+
+
+
