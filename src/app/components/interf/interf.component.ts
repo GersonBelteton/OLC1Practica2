@@ -8,6 +8,7 @@ import { Token } from "../../classes/Token";
 import { ErrorLexico } from 'src/app/classes/ErrorLexico';
 import { ErroresComponent } from "../errores/errores.component";
 import {ErrorSintactico  } from "../../classes/ErrorSintactico";
+import { Simbolo } from "../../classes/Simbolo";
 @Component({
   selector: 'app-interf',
   templateUrl: './interf.component.html',
@@ -20,10 +21,12 @@ export class InterfComponent implements OnInit {
   texto;
   descripcion;
   archivo:File
+  entrada:string
   salida:string
   tokens:Token[]
   erroresL:ErrorLexico[] = []
   erroresS:ErrorSintactico[] = []
+  simbolos:Simbolo[] = []
   html:string
   constructor() { }
 
@@ -34,15 +37,21 @@ export class InterfComponent implements OnInit {
 
 
   buscarArchivo(e){
-    console.log(e);
     this.archivo = e.target.files[0]
-    console.log(this.archivo.text())
-    this.archivo.text()
-    console.log(e.target.result)
  
   }
+
+  
   cargarArchivo(){
     console.log("cargar archivo")
+    let fileReader = new FileReader();
+    fileReader.onload = (e) =>{
+      const textArea = document.getElementById("txtC")
+      textArea.textContent = fileReader.result.toString()
+      
+    }
+    fileReader.readAsText(this.archivo)
+
   }
   traducir(texto:string){
     
@@ -72,9 +81,9 @@ export class InterfComponent implements OnInit {
   traducirL(tokens:Token[]){
     var t = new Traductor()
     t.traducir(tokens)
-    t.mostrarListaSimbolos()
-    this.salida = t.stringSalida()
     
+    this.salida = t.stringSalida()
+    this.simbolos = t.getSimbolos()
 
   }
  

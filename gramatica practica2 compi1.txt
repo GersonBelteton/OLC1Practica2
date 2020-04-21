@@ -1,0 +1,172 @@
+inicio:= prClass id sLlaveIzq <interiorClase> sLlaveDer
+interiorClase:= <declaracion><interiorClase>
+	|<metodo><interiorClase>
+        |epsilon
+
+
+declaracion:= <tipoVariable> identificador <listaId> sPuntoyComa
+listaId:= sComa identificador <listaId>
+	  |<asignacion>
+          |epsilon
+
+
+asignarion:=sIgual <valores>
+valores:= <valor> <operacion>
+         |valorTrueFalse
+
+impresion := prConsole sPunto prWriteline sParentesisIzq <opcionImpresion> sParentesisDer
+
+opcionImpresion := <cuerpoImpresion>
+                   |epsilon
+
+cuerpoImpresion := cadena <concatenacion>
+		  |html<concatenacion>	
+                  |identificador  <concatenacion>
+		  |numero <concatenacion>
+                  |<llamadaMetodo><concatenacion>
+                  |<agrupacion><operacion> <concatenacion>
+
+concatenacion := sMas <cuerpoImpresion>
+                |sParentesisDer
+valor:= numero 
+       |cadena 
+       |identificador
+       |<agrupacion>
+
+valorTrueFalse := true
+                  |false
+
+operacion := <operadorAr><valor><operacion>
+             |epsilon
+
+agrupacion:= sParentesisIzq <valor> <operacion> sParentesisDer
+metodo := <tipoMetodo> identificador sParentesisIzq <argumentos> sParentesisDer sLlaveIzq <interiorMetodo> sLlaveDer
+
+
+llamarMetodo:= identificador sParentesisIzq <listaIdMetodo> sParentesisDer 
+
+listaIdMetodo:= identificador <listIdMetodo2>
+               |epsilon
+
+listaIdMetodo2:= sComa identificador <listaIdMetodo2>
+		|epsilon               
+
+interiorMetodo:= <declaracion><interiorMetodo>
+	  |<estructura><interiorMetodo>
+	  |<impresión>sPuntoyComa<interiorMetodo> 
+	  |comentario <interiorMetodo>    
+	  |identificador <asignacion>sPuntoyComa<interiorMetodo>
+	  |<llamadaMetodo>sPuntoyComa <interiorMetodo>
+	  |prReturn <return>
+	  |epsilon
+
+return:= <condicion>
+        |<valor> <operacion>
+        |<valorTrueFalse>
+
+interiorRepetitivo:= <declaracion><interiorRepetitivo>
+	  |<estructura><interiorRepetitivo>
+	  |<impresión>sPuntoyComa<interiorRepetitivo> 
+	  |comentario <interiorRepetitivo>    
+	  |identificador <asignacion>sPuntoyComa<interiorRepetitivo>
+	  |break <interiorRepetitivo>
+          |continue <interiorRepetitivo>	
+          |<llamadaMetodo>sPuntoyComa<interiorRepetitivo>
+          |prReturn<return>
+	  |epsilon
+argumentos:= <tipoVariable> identificador <listaVariables>
+             |epsilon
+
+
+estructura:= <if><else>
+            |<while>
+            |<for>
+            |<switch>
+
+if := if sParentesisIzq <condicion> sParentesisDer sLlaveIzq <interiorMetodo> sLlaveDer
+
+else := else <elseif> 
+	|epsilon
+
+elseif:= <if>
+	 |sLlaveIzq <interiorMetodo> sLlaveDer
+
+
+while:= while sParentesisIzq <condicion> sParentesisDer sLlaveIzq <interiorRepetitivo> sLlaveDer
+
+
+for := for sParentesisIzq <cuerpoFor> sParentesisDer sLlaveIzq <interior> sLlaveDer
+
+cuerpoFor := <declaracion> sPuntoyComa <condicion> sPuntoyComa <indec>
+
+
+switch := switch sParentesisIzq identificador sParentesisDer sLlaveIzq <cuerpoSwitch> sLlaveDer
+
+cuerpoSwitch := case <valor> sDosPuntos <interior> break sPuntoyComa <cuerpoSwitch>
+                |default sDosPuntos <interior> break sPuntoyComa <cuerpoSwitch2>
+                |epsilon
+
+cuerpoSwitch2 := case <valor> sDosPuntos <interior> break sPuntoyComa <cuerpoSwitch2>
+                |epsilon
+
+
+indec:= identificador <operadorInDec>
+operadorInDec := sMas sMas
+	          |sMenos sMenos
+condicion := <valor> <condicional> <valor> <listaCondicion>
+            |llamadaMetodo <listaCondicion>
+            |<valorTrueFalse>
+            |identificador
+           
+
+listaCondicion := <orAnd> <condicion>
+                 |epsilon
+
+orAnd:= sOr sOr
+       |sAnd sAnd
+      
+condicional:= sMenor <Igual>
+              |sMayor <Igual>
+              |sIgual sIgual
+              |sNot sIgual 
+       
+              
+igual := sIgual
+         |epsilon
+
+
+listaVariables:= sComa <tipoVariable> identificador <listaVariables>
+                |epsilon
+operadorAR := sMas
+             |SMenos
+	     |sPor
+             |sDiagonal
+tipoMetodo:= int								
+      |float								
+      |double								
+      |bool								
+      |String								
+      |char
+      |void
+
+tipoVariable int
+            |float
+	    |double
+	    | bool
+	    |String
+ 	    |char
+
+
+
+
+///////////////////// Errores por arreglar : 
+validar comentarios-------------------------------------------------------------corregido
+metodos iniciados con prDouble--------------------------------------------------corregido
+comillas simples(html)----------------------------------------------------------corregido
+agregar prWrite en Console.WriteLine--------------------------------------------corregido
+String con S minuscula y mayuscula ---------------------------------------------corregido
+revisar numeros y operaciones en llamada a metodo
+arreglar lista de asignaciones en declaracion
+en bucle for(int a = .....) el int puede o no venir
+operaciones en condicion de for (posiblemente en cualquier condicion)
+break opcional en switch

@@ -1,4 +1,16 @@
-<app-nav></app-nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Traductor</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <input type="file"   (change)="buscarArchivo($event)"  multiple>
+    <button type="button" class="btn btn-secondary" (click)="cargarArchivo()">cargarArchivo</button>
+  
+  </div>
+</nav>
+
 
 
 <table style="width: 100%;">
@@ -18,7 +30,7 @@
                   </div>
 
                   <div class="btn-group-vertical">
-                    <button type="button" class="btn btn-primary" (click)="traducir(texto.value)">Button</button>
+                    <button type="button" class="btn btn-primary" (click)="traducir(texto.value)">Traducir</button>
                   </div>
                 </div>
               </div>
@@ -30,10 +42,9 @@
                 <div class="card-body">
                   <h4 class="card-title">Python</h4>
                   <div class="form-group">
-                    <label for="exampleTextarea">Escribe el código aqui: </label>
+           
                     <textarea class="form-control" id="exampleTextarea" rows="15" #texto2>{{salida}}</textarea>
-                    <input type="file" (change)="buscarArchivo($event)"  multiple>
-                    <button type="button" class="btn btn-primary" (click)="cargarArchivo()">Button</button>
+
                   </div>
                 </div>
               </div>
@@ -58,6 +69,38 @@
       <td style="width: 45%; "> 
 
         <div class="card border-primary mb-3" style="max-width: 35rem; ">
+          
+          <div class="card-body">
+            <h4 class="card-title">Simbolos</h4>
+            <div class="form-group">
+              <table class="table table-hover"  style="width: 100%;">
+                <thead>
+                  <tr>
+              
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Identificador</th>
+                    <th scope="col">Fila</th>
+ 
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr class="table-primary" *ngFor="let simbolo of simbolos">
+                    
+                  
+                    <td>{{simbolo.getTipo()}}</td>
+                    <td>{{simbolo.getIdentificador()}}</td>
+                    <td>{{simbolo.getFila()}}</td>
+                  </tr>
+
+                </tbody>
+              </table> 
+      
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-primary mb-3" style="max-width:35rem; ">
           
           <div class="card-body">
             <h4 class="card-title">Errores</h4>

@@ -13,6 +13,7 @@ export class Traductor{
     indice:number = 0;
     contadorIdentacion:number = 0;
     contadorLlaveSwitch:number = 0;
+    contadorLlaveMain:number = 0;
     produccion:string=""
     produccion2:string=""
     identacion:string=""
@@ -23,6 +24,10 @@ export class Traductor{
 
     agregarSimbolo(tipo:string, id:string, fila:number){
         this.simbolos.push(new Simbolo(tipo, id, fila))
+    }
+
+    getSimbolos(){
+        return this.simbolos
     }
 
 
@@ -101,6 +106,22 @@ export class Traductor{
                             this.exprecion += this.preanalisis.getLexema()
                         }
 
+                    }else if((this.preanalisis.getToken() == "prMain" && entrada[this.indice+1].getToken()== "sParentesisIzq")||this.produccion2 == "declaracion-main"){
+                        this.produccion2 = "declaracion-main"
+                        this.tipo = ""
+                        if(this.preanalisis.getToken() == "prMain" && entrada[this.indice+1].getToken() == "sParentesisIzq"){
+                            this.agregarToken("", "def main()")
+                        
+                        }else if(this.preanalisis.getToken() == "sLlaveIzq"){
+                            this.contadorIdentacion++
+                            this.contadorLlaveMain = this.contadorIdentacion
+                            this.identar(this.contadorIdentacion)
+                            this.agregarToken("", ":\n"+this.identacion)
+                            this.produccion2 =""
+                            this.produccion = ""
+
+
+                        }
                     }else if((this.preanalisis.getToken() == "identificador" && entrada[this.indice+1].getToken()== "sParentesisIzq")||this.produccion2 == "declaracion-metodo"){
                         this.produccion2 = "declaracion-metodo"
                         this.tipo = ""
@@ -482,6 +503,16 @@ export class Traductor{
                         this.identar(this.contadorIdentacion)
                         this.agregarToken("", "\n"+this.identacion)
                         this.agregarToken("","\n"+this.identacion+"}")
+                    }else if(this.contadorLlaveMain == this.contadorIdentacion){
+                        this.contadorIdentacion--
+                        this.identar(this.contadorIdentacion)
+                        this.agregarToken("", "\n"+this.identacion)
+                        this.contadorIdentacion++
+                        this.identar(this.contadorIdentacion)
+                        this.agregarToken("", "if__name__=\"__main__\"\n"+this.identacion)
+                        this.contadorIdentacion--
+                        this.identar(this.contadorIdentacion)
+                        this.agregarToken("","main()\n"+this.identacion)
                     }
                     this.contadorIdentacion--
                     this.identar(this.contadorIdentacion)

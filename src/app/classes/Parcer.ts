@@ -12,9 +12,21 @@ export class Parcer{
         return this.errores
     }
     Parcer(listaToken:Token[]){
-        this.indice = 0
+        this.indice = -1
         this.listaToken = listaToken
         this.preanalisis = this.listaToken[this.indice]
+        do{
+            this.indice++;
+            this.preanalisis = this.listaToken[this.indice]
+        }while(this.preanalisis.getToken() == "comentario" || this.preanalisis.getToken() == "comentarioML")
+    /*        do
+            {
+                indice++;
+                preanalisis = this.listaToken[indice];
+                Console.WriteLine(this.listaToken.Count);
+            } while (preanalisis.getToken().Equals("comentario") || preanalisis.getToken().Equals("comentarioML"));
+
+  */
         this.inicio()
     }
     inicio(){
@@ -61,10 +73,25 @@ export class Parcer{
  
     }
 
+
+    idMain(){
+        if(this.preanalisis.getToken() == "identificador"){
+            this.Parea("identificador")
+        }else if(this.preanalisis.getToken() == "prMain"){
+            this.Parea("prMain")
+        }else{
+            this.error = true;
+            var error = "Error sintáctico, se esperaba [ identificador o Main ] en vez de " + "[" + this.preanalisis.getToken() + "]"
+            console.log(error)
+            this.errores.push(new ErrorSintactico(error, this.preanalisis.getLexema(), this.preanalisis.getFila(), this.preanalisis.getColumna()))
+        }
+
+
+    }
     metodo(){
 
             this.tipoMetodo()
-            this.Parea("identificador")
+            this.idMain()
             this.Parea("sParentesisIzq")
             this.argumentos()
             this.Parea("sParentesisDer")
@@ -641,8 +668,12 @@ operadorInDec := sMas sMas
     }
 
     listaIdMetodo(){
-        if(this.preanalisis.getToken() == "identificador"){
-            this.Parea("identificador")
+        if(this.preanalisis.getToken() == "numero" || this.preanalisis.getToken() == "identificador" ||
+        this.preanalisis.getToken() == "cadena" || this.preanalisis.getToken() == "sParentesisIzq" ||
+         this.preanalisis.getToken() == "caracter" || this.preanalisis.getToken() == "prTrue" ||
+         this.preanalisis.getToken() == "prFalse"){
+           // this.Parea("identificador")
+            this.valores()
             this.listaIdMetodo2()
         }else{
             //epsilon
@@ -658,7 +689,7 @@ listaIdMetodo2:= sComa identificador <listaIdMetodo2>
     listaIdMetodo2(){
         if(this.preanalisis.getToken()== "sComa"){
             this.Parea("sComa")
-            this.Parea("identificador")
+            this.valores()
             this.listaIdMetodo2()
         }else{
             //epsilon
